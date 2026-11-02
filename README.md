@@ -31,6 +31,39 @@
 $ npm install
 ```
 
+## Environment variables
+
+Configure `.env` with the local PostgreSQL database:
+
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=weplanet-user
+DB_PASSWORD=weplanet
+DB_NAME=weplanet
+JWT_SECRET=change-this-secret
+JWT_EXPIRES_IN=1d
+NODE_ENV=development
+```
+
+## Database migrations
+
+The project uses TypeORM migrations. Database synchronization is disabled, so
+the schema must be created by running the migrations.
+
+To see the migration status:
+
+```bash
+npm run migration:show
+```
+
+To create the `users` table and the initial database schema:
+
+```bash
+npm run migration:run
+```
+
 ## Compile and run the project
 
 ```bash
