@@ -1,4 +1,4 @@
- import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
+import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class AddTripDestinationCoordinates1764100000000 implements MigrationInterface {
   name = 'AddTripDestinationCoordinates1764100000000';

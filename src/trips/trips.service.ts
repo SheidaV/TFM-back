@@ -50,7 +50,6 @@ export class TripsService {
     this.checkOwner(participation);
 
     const trip = participation.trip;
-    // Se comprueban las fechas combinando las nuevas con las que ya tenía
     this.checkDates(
       dto.start_date ?? trip.start_date,
       dto.end_date ?? trip.end_date,
@@ -77,7 +76,7 @@ export class TripsService {
     await this.tripsRepository.delete(tripId);
   }
 
-  // Si el usuario no participa en el viaje, error NotFoundException
+  // error NotFoundException to not reveal the trip exists
   private async getParticipation(
     tripId: string,
     userId: string,

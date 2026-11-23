@@ -23,6 +23,12 @@ export class UsersService {
     return user ? UserMapper.toDto(user) : null;
   }
 
+  async findByAliasOrEmail(identifier: string): Promise<User | null> {
+    return identifier.includes('@')
+      ? this.usersRepository.findByEmail(identifier)
+      : this.usersRepository.findByAlias(identifier);
+  }
+
   async findByEmailWithPassword(email: string): Promise<User | null> {
     return this.usersRepository.findByEmailWithPassword(email);
   }

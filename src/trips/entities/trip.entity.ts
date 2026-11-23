@@ -29,7 +29,7 @@ export class Trip {
   @Column({ length: 150 })
   destination!: string;
 
-  // Coordenates of the destination, if available, for the map
+  // Coordinates of the destination, if available, for the map
   @Column({ type: 'double precision', nullable: true })
   destination_lat!: number | null;
 
@@ -42,7 +42,6 @@ export class Trip {
   @Column({ type: 'date' })
   end_date!: string;
 
-  // Convert to number when reading from the database, because TypeORM returns numeric columns as strings by default
   @Column({
     type: 'numeric',
     precision: 10,

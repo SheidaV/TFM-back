@@ -32,7 +32,11 @@ export class UsersRepository {
       .getOne();
   }
 
+  // case insensitive
   findByAlias(alias: string): Promise<User | null> {
-    return this.repository.findOne({ where: { alias: alias.trim() } });
+    return this.repository
+      .createQueryBuilder('user')
+      .where('LOWER(user.alias) = LOWER(:alias)', { alias: alias.trim() })
+      .getOne();
   }
 }

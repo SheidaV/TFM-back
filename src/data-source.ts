@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { DataSource } from 'typeorm';
 
-// Migraciones.
+// TypeORM CLI config for migrations
 export default new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST ?? 'localhost',
