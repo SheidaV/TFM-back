@@ -11,5 +11,6 @@ import { TripsService } from './trips.service.js';
   imports: [TypeOrmModule.forFeature([Trip, TripParticipant, Role])],
   controllers: [TripsController],
   providers: [TripsService, TripsRepository],
+  exports: [TripsService],
 })
 export class TripsModule {}

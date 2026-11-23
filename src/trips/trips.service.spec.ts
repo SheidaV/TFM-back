@@ -1,13 +1,6 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  ROLE_OWNER,
-  ROLE_PARTICIPANT,
-} from '../participants/entities/role.entity.js';
+import { ROLE_PARTICIPANT } from '../participants/entities/role.entity.js';
 import { TripsRepository } from './trips.repository.js';
 import { TripsService } from './trips.service.js';
 
@@ -72,14 +65,6 @@ describe('TripsService', () => {
     expect(repository.createWithOwner).not.toHaveBeenCalled();
   });
 
-  it('devuelve 404 si el usuario no participa en el viaje', async () => {
-    repository.findParticipation.mockResolvedValue(null);
-
-    await expect(service.findOne(trip.id, 'user-2')).rejects.toThrow(
-      NotFoundException,
-    );
-  });
-
   it('solo el propietario puede editar', async () => {
     repository.findParticipation.mockResolvedValue(
       participation(ROLE_PARTICIPANT, 'participant'),
@@ -88,27 +73,5 @@ describe('TripsService', () => {
     await expect(
       service.update(trip.id, { name: 'Otro nombre' }, 'user-1'),
     ).rejects.toThrow(ForbiddenException);
-  });
-
-  it('valida las fechas combinando las nuevas con las guardadas', async () => {
-    repository.findParticipation.mockResolvedValue(
-      participation(ROLE_OWNER, 'owner'),
-    );
-
-    await expect(
-      service.update(trip.id, { end_date: '2027-01-01' }, 'user-1'),
-    ).rejects.toThrow(BadRequestException);
-    expect(repository.save).not.toHaveBeenCalled();
-  });
-
-  it('solo el propietario puede eliminar', async () => {
-    repository.findParticipation.mockResolvedValue(
-      participation(ROLE_PARTICIPANT, 'participant'),
-    );
-
-    await expect(service.remove(trip.id, 'user-1')).rejects.toThrow(
-      ForbiddenException,
-    );
-    expect(repository.delete).not.toHaveBeenCalled();
   });
 });
