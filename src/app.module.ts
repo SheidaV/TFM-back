@@ -24,6 +24,11 @@ import { VotesModule } from './votes/votes.module.js';
         username: config.get<string>('DB_USERNAME'),
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_NAME'),
+        // For deploy in Neon
+        ssl:
+          config.get<string>('DB_SSL') === 'true'
+            ? { rejectUnauthorized: false }
+            : false,
         autoLoadEntities: true,
         synchronize: false,
       }),

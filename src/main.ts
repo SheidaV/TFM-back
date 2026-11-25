@@ -13,7 +13,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  app.enableCors();
+
+  const corsOrigin = process.env.CORS_ORIGIN;
+  app.enableCors({ origin: corsOrigin ? corsOrigin.split(',') : true });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('WePlanet API')
