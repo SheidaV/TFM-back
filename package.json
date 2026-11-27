@@ -30,6 +30,8 @@
     "start:render": "npm run migration:run:prod && npm run start:prod"
   },
   "dependencies": {
+    "@neon/config": "^1.14.7",
+    "@neon/env": "^2.1.10",
     "@nestjs/common": "^12.0.1",
     "@nestjs/config": "^12.0.1",
     "@nestjs/core": "^12.0.1",

@@ -17,21 +17,27 @@ import { VotesModule } from './votes/votes.module.js';
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres' as const,
-        host: config.get<string>('DB_HOST', 'localhost'),
-        port: Number(config.get<string>('DB_PORT', '5432')),
-        username: config.get<string>('DB_USERNAME'),
-        password: config.get<string>('DB_PASSWORD'),
-        database: config.get<string>('DB_NAME'),
-        // For deploy in Neon
-        ssl:
-          config.get<string>('DB_SSL') === 'true'
-            ? { rejectUnauthorized: false }
-            : false,
-        autoLoadEntities: true,
-        synchronize: false,
-      }),
+      useFactory: (config: ConfigService) => {
+        const common = {
+          type: 'postgres' as const,
+          autoLoadEntities: true,
+          synchronize: false,
+        };
+        // Neon (production): pooled connection string with SSL
+        const url = config.get<string>('DATABASE_URL');
+        if (url) {
+          return { ...common, url, ssl: true };
+        }
+        // local PostgreSQL
+        return {
+          ...common,
+          host: config.get<string>('DB_HOST', 'localhost'),
+          port: Number(config.get<string>('DB_PORT', '5432')),
+          username: config.get<string>('DB_USERNAME'),
+          password: config.get<string>('DB_PASSWORD'),
+          database: config.get<string>('DB_NAME'),
+        };
+      },
     }),
     AuthModule,
     UsersModule,
